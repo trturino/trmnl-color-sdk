@@ -1,7 +1,7 @@
 @use "../abstracts/mixins" as mixins;
 @use "../abstracts/functions" as fn;
 
-@include mixins.generate-grey-utilities();
+@include mixins.generate-color-utilities();
 
 @each $key in (primary, secondary, accent, success, warning, error) {
 
