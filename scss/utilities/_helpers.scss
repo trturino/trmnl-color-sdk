@@ -1,0 +1,29 @@
+@use "../abstracts/variables" as vars;
+
+.flex {
+  display: flex !important;
+  gap: vars.$gap !important;
+}
+
+.flex--row {
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.flex--col {
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.truncate-none {
+  text-overflow: unset;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  word-break: break-word;
+}
+
+@each $align in (left, center, right, justify) {
+  .text--#{$align} {
+    text-align: #{$align} !important;
+  }
+}

@@ -1,0 +1,33 @@
+@use "../abstracts/variables" as vars;
+@use "../abstracts/functions" as fn;
+@use "../abstracts/mixins"    as mixins;
+
+.title_bar {
+  height: vars.$title-bar-h;
+  display: flex;
+  align-items: center;
+  padding: vars.$gap;
+  gap: vars.$gap;
+  position: relative;
+  color: fn.color(black);
+  z-index: 10;
+  @include mixins.pixel-image("");
+}
+
+.title_bar .image {
+  max-height: 28px;
+}
+
+.title_bar .title,
+.title_bar .instance {
+  font-family: "NicoClean";
+  font-size: 16px;
+  line-height: 1;
+  -webkit-text-stroke: 3.5px fn.color(white);
+  paint-order: stroke fill;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}

@@ -1,0 +1,23 @@
+@use "../abstracts/variables" as vars;
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$list-gap-small;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  align-items: stretch;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  font-family: "NicoClean";
+  font-size: 16px;
+  line-height: 20px;
+  word-break: break-all;
+}

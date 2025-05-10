@@ -1,0 +1,12 @@
+@use "variables" as vars;
+@use "sass:map";
+
+// Core helper functions
+@function color($key) {
+    @return map.get(vars.$colors, $key);
+  }
+  
+  @function screen-size($dim) {
+    @return if($dim == w, vars.$screen-w, vars.$screen-h);
+  }
+  

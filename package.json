@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "css-loader": "^7.1.2",
+    "mini-css-extract-plugin": "^2.9.2",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.87.0",
+    "sass-loader": "^16.0.5",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
+  },
+  "scripts": {
+    "build:css": "webpack --mode production",
+    "watch:css": "webpack --mode development --watch"
+  }
+}

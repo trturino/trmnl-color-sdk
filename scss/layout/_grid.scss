@@ -1,0 +1,24 @@
+@use "../abstracts/variables" as vars;
+
+// Grid utilities
+.grid {
+  display: grid;
+  gap: vars.$gap;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  width: 100%;
+}
+
+.grid--no-gap {
+  gap: 0;
+}
+
+@for $i from 1 through 12 {
+  .grid--cols-#{$i} {
+    grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+  }
+
+  .col--span-#{$i} {
+    grid-column: span #{$i};
+    display: flex;
+  }
+}
