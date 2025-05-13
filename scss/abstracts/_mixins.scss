@@ -1,4 +1,5 @@
 @use "../abstracts/variables" as vars;
+@use "../abstracts/colors" as colors;
 @use "sass:string";
 
 // Reusable mixins
@@ -21,35 +22,37 @@
   image-rendering: crisp-edges;
 }
 
+
 // Generate grey scale utilities
 @mixin generate-color-utilities {
-  @each $name, $hex in vars.$colors {
+  @each $name, $hex in colors.$all-colors {
     // turn the map‐key into a real string
     $key-str: "#{$name}";
-
-
-    .bg--#{$name},
-    .bg-#{$name} {
-      background-color: $hex !important;
-    }
-
-    .text--#{$name} {
-      color: $hex !important;
-    }
-
-    @if string.index($key-str, 'gray') {
-      $i: string.slice($name, 6);
-
+    .trmnl {
       .bg--#{$name},
       .bg-#{$name} {
-        @include pixel-image("/images/grayscale/#{$name}.png");
+        background-color: $hex !important;
       }
 
       .text--#{$name} {
-        @include pixel-image("/images/grayscale/#{$name}.png");
-        color: rgba(0, 0, 0, 0);
-        -webkit-background-clip: text;
-        background-clip: text;
+        color: $hex !important;
+      }
+
+      @if string.index($key-str, "-") {
+        $i: string.slice($name, string.index($key-str, "-") + 1);
+        $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
+
+        .bg--#{$name},
+        .bg-#{$name} {
+          @include pixel-image("/images/#{$folder}/images/grayscale/gray-#{$i}.png");
+        }
+
+        .text--#{$name} {
+          @include pixel-image("/images/#{$folder}/images/grayscale/gray-#{$i}.png");
+          color: rgba(0, 0, 0, 0);
+          -webkit-background-clip: text;
+          background-clip: text;
+        }
       }
     }
   }
@@ -57,35 +60,38 @@
 
 // Generate border utilities
 @mixin generate-border-utilities {
-  @for $i from 1 through 7 {
+  @each $name, $hex in colors.$all-colors {
+    .trmnl {
+      $i: string.slice($name, string.index($key-str, "-") + 1);
+      $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
+      .border--h-#{$name},
+      .b-h-.bg-#{$folder}-#{$i} {
+        position: relative;
 
-    .border--h-#{$i},
-    .b-h-gray-#{$i} {
-      position: relative;
-
-      &::before {
-        content: " ";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        @include pixel-image("/images/borders/#{$i}.png");
+        &::before {
+          content: " ";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          @include pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
+        }
       }
-    }
 
-    .border--v-#{$i},
-    .b-v-gray-#{$i} {
-      position: relative;
+      .border--v-#{$name},
+      .b-v-#{$folder}-#{$i} {
+        position: relative;
 
-      &::after {
-        content: " ";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 1px;
-        height: 100%;
-        @include pixel-image("/images/borders/#{$i}.png");
+        &::after {
+          content: " ";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 1px;
+          height: 100%;
+          @include pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
+        }
       }
     }
   }

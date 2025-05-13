@@ -1,0 +1,10 @@
+
+@use "variables" as vars;
+@use "functions" as fn;
+@use "sass:map";
+
+$colors: var.$bases;
+
+$scales: fn.generate-color-scales($colors, 7);
+
+$all-colors: map.merge($colors, $scales);

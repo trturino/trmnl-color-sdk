@@ -26,38 +26,9 @@ $half-vertical-h: $screen-h - $gap * 2;
 $half-horizontal-w: $screen-w - $gap * 2;
 $half-horizontal-h: calc(($screen-h - $gap * 2) / 2) - calc($gap / 2);
 
-// Colour palette
-$colors: (
-  yellow: #FFFF00,
-  "yellow-1": #FFFF2A,
-  "yellow-2": #FFFF54,
-  "yellow-3": #FFFF7E,
-  "yellow-4": #FFFFA8,
-  "yellow-5": #FFFFD2,
-  "yellow-6": #FFFFE6,
-  "yellow-7": #FFFFF2,
-  red: #FF0000,
-  "red-1": #FF2A2A,
-  "red-2": #FF5454,
-  "red-3": #FF7E7E,
-  "red-4": #FFA8A8,
-  "red-5": #FFD2D2,
-  "red-6": #FFE6E6,
-  "red-7": #FFF2F2,
-  blue: #0000FF,
-  "blue-1": #2A2AFF,
-  "blue-2": #5454FF,
-  "blue-3": #7E7EFF,
-  "blue-4": #A8A8FF,
-  "blue-5": #D2D2FF,
-  "blue-6": #E6E6FF,
-  "blue-7": #F2F2FF,
-  green: #00FF00,
-  "green-1": #2AFF2A,
-  "green-2": #54FF54,
-  "green-3": #7EFF7E,
-  "green-4": #A8FFA8,
-  "green-5": #D2FFD2,
-  "green-6": #E6FFE6,
-  "green-7": #F2FFF2,
+$bases: (
+  yellow:  #FFFF00,
+  red:     #FF0000,
+  blue:    #0000FF,
+  green:   #00FF00,
 ) !default;
