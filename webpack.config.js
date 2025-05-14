@@ -56,7 +56,14 @@ module.exports = (env, argv) => {
           test: /\.(png|jpg|jpeg|gif)$/i,
           type: "asset/resource",
           generator: {
-            filename: "images/[name][ext]",
+            filename: (pathData) => {
+              const filepath = path
+                .dirname(pathData.filename)
+                .split(path.sep)
+                .slice(1)
+                .join("/");
+              return `images/${filepath}/[name][ext]`;
+            },
           },
         },
       ],
@@ -70,10 +77,10 @@ module.exports = (env, argv) => {
         onBuildStart: {
           scripts: [
             // adjust URL, flags, filters, colors, etc. as needed
-            "node build/scripts/getimages.js " +
-              "https://usetrmnl.com/css/latest/plugins.css " +
-              "--base-url https://usetrmnl.com " +
-              "--output images ",
+            "node build/getimages.js " +
+            "https://usetrmnl.com/css/latest/plugins.css " +
+            "--base-url https://usetrmnl.com " +
+            "--output images ",
           ],
           blocking: true,
           parallel: false,

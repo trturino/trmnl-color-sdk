@@ -1,38 +1,63 @@
 @use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
 
-.table {
-  width: 100%;
+@each $name, $hex in colors.$colors {
+  .trmnl {
+    .table-#{"" + $name} {
 
-  thead,
-  tbody {
-    tr {
-      position: relative;
-      text-align: left;
+      thead,
+      tbody {
+        tr {
+          position: relative;
+          text-align: left;
+
+          th::before,
+          td::before {
+            content: " ";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            @include mixins.pixel-image("");
+
+          }
+        }
+
+        tr:last-child td::before {
+          display: none;
+        }
+      }
+
+      thead tr {
+        height: 2.25rem;
+
+        th::before {
+          background: repeat url("/images/#{$name}/images/borders/3.png")
+        }
+
+
+      }
+
+      tbody tr {
+        height: 46px;
+
+        td::before {
+          background: repeat url("/images/#{$name}/images/borders/6.png")
+        }
+      }
     }
 
-    tr:last-child td::before {
-      display: none;
+
+
+    .table-#{"" + $name}--condensed {
+      thead tr {
+        height: 24px;
+      }
+
+      tbody tr {
+        height: 31px;
+      }
     }
-
-    th::before,
-    td::before {
-      content: " ";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      @include mixins.pixel-image("/images/borders/6.png");
-    }
-  }
-}
-
-.table--condensed {
-  thead tr {
-    height: 24px;
-  }
-
-  tbody tr {
-    height: 31px;
   }
 }

@@ -16,7 +16,9 @@
 
 // Pixel-perfect image rendering
 @mixin pixel-image($url) {
-  background: repeat url(#{$url});
+  @if $url != "" {
+    background: repeat url(#{$url});
+  }
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
@@ -28,7 +30,9 @@
   @each $name, $hex in colors.$all-colors {
     // turn the map‐key into a real string
     $key-str: "#{$name}";
+
     .trmnl {
+
       .bg--#{$name},
       .bg-#{$name} {
         background-color: $hex !important;
@@ -60,10 +64,13 @@
 
 // Generate border utilities
 @mixin generate-border-utilities {
-  @each $name, $hex in colors.$all-colors {
+  @each $name, $hex in colors.$scales {
     .trmnl {
+      $key-str: "#{$name}";
+
       $i: string.slice($name, string.index($key-str, "-") + 1);
       $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
+
       .border--h-#{$name},
       .b-h-.bg-#{$folder}-#{$i} {
         position: relative;

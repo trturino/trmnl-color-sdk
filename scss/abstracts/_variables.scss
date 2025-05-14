@@ -15,6 +15,9 @@ $list-gap-small: 8px !default;
 $list-gap-large: 16px !default;
 $title-bar-h: 40px !default;
 $title-bar-small-h: 32px !default;
+$screen-w-v2: 1200px;
+$screen-h-v2: 825px;
+
 
 // Derived dimensions
 $full-w: $screen-w - $gap * 2;
