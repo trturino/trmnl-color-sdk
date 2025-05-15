@@ -1,10 +1,9 @@
-
 @use "variables" as vars;
 @use "sass:map";
+@use "sass:string";
+@use "sass:color";
 
 $colors: vars.$bases;
-
-
 
 /// Generates an N-step lightness scale for each color in $bases.
 /// @param $bases  A map of `name: color` pairs
@@ -20,10 +19,10 @@ $colors: vars.$bases;
     @for $i from 1 through $steps {
       // compute how much lighter: e.g. 1×12.5%, 2×12.5%, …
       $light-amount: $percent-step * $i;
-      $shade: lighten($base-color, $light-amount);
+      $shade: color.adjust($base-color,  $lightness: $light-amount);
 
       // build the map key "yellow-1", "yellow-2", etc.
-      $key: unquote("#{ $name }-#{ $i }");
+      $key: string.unquote("#{ $name }-#{ $i }");
       $scales: map.merge(
         $scales,
         (

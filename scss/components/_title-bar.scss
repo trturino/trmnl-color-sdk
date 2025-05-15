@@ -1,124 +1,58 @@
 @use "../abstracts/variables" as vars;
-@use "../abstracts/functions" as fn;
 @use "../abstracts/mixins" as mixins;
 @use "../abstracts/colors" as colors;
 
 @each $name, $hex in colors.$colors {
   .trmnl-v2 {
-    .view--full .layout:has(+.title_bar-#{"" + $name}) {
-      height: calc(vars.$screen-h-v2 - vars.$gap*2 - vars.$title_bar-h)
-    }
-
-    .view--full .title_bar-#{"" + $name}::before {
+    .view--full .title_bar.title_bar-#{"" + $name}::before {
       background-image: url("/images/#{$name}/images/layout/full--title_bar-v2.png");
-      width: 1181px
     }
   }
 
   .trmnl {
-    .view--full .layout:has(+.title_bar-#{"" + $name}) {
-      height: calc(vars.$screen-h - vars.$gap*2 - vars.$title_bar-h)
-    }
+    .title_bar.title_bar-#{"" + $name} {
+      color: $hex !important;
 
-    .view--quadrant .layout:has(+.title_bar-#{"" + $name}) {
-      height: calc(vars.$quadrant-h - vars.$title_bar-small-h)
-    }
-
-    .view--half_vertical .layout:has(+.title_bar-#{"" + $name}) {
-      height: calc(vars.$half_vertical-h - vars.$title_bar-small-h)
-    }
-
-    .view--half_horizontal .layout:has(+.title_bar-#{"" + $name}) {
-      height: calc(vars.$quadrant-h - vars.$title_bar-small-h)
-    }
-
-    .title_bar-#{"" + $name} {
-      height: vars.$title-bar-h;
-      display: flex;
-      align-items: center;
-      align-content: center;
-      padding: vars.$gap;
-      gap: vars.$gap;
-      position: relative;
-      color: fn.color($hex);
-      z-index: 10;
-      background-repeat: no-repeat;
-      @include mixins.pixel-image("");
-
-      .image {
-        max-height: 28px
-      }
-
-      .title {
-        font-family: "NicoClean";
-        -webkit-font-smoothing: none;
-        font-size: 16px;
-        padding-top: 5px;
-        line-height: 1;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        line-clamp: 1;
-        -webkit-box-orient: vertical;
-        word-break: break-all;
-        overflow: hidden;
-        min-height: 16px;
-        font-weight: 400;
-        -webkit-text-stroke: 3.5px fn.color(white);
-        paint-order: stroke fill;
-      }
-
-      .instance {
-        @extend .title;
-        margin-left: auto;
-      }
+      // .title {
+      //   font-family: "NicoClean";
+      //   -webkit-font-smoothing: none;
+      //   font-size: 16px;
+      //   padding-top: 5px;
+      //   line-height: 1;
+      //   display: -webkit-box;
+      //   -webkit-line-clamp: 1;
+      //   line-clamp: 1;
+      //   -webkit-box-orient: vertical;
+      //   word-break: break-all;
+      //   overflow: hidden;
+      //   min-height: 16px;
+      //   font-weight: 400;
+      //   -webkit-text-stroke: 3.5px fn.color(white);
+      //   paint-order: stroke fill;
+      // }
     }
 
     .view--full {
-      .title_bar-#{"" + $name}::before {
-        content: " ";
-        position: absolute;
-        top: 1px;
-        left: 0;
-        background-repeat: no-repeat;
-        pointer-events: none;
+      .title_bar.title_bar-#{"" + $name}::before {
         @include mixins.pixel-image("/images/#{$name}/images/layout/full--title_bar.png");
-        width: 781px;
-        height: 37px;
-        z-index: -1;
       }
     }
 
-    .trmnl .view--half_horizontal .title_bar-#{"" + $name},
-    .trmnl .view--half_vertical .title_bar-#{"" + $name},
-    .trmnl .view--quadrant .title_bar-#{"" + $name} {
-      height: vars.$title-bar-small-h;
-      background-repeat: no-repeat
-    }
-
-    .trmnl .view--half_horizontal .title_bar-#{"" + $name} .image,
-    .trmnl .view--half_vertical .title_bar-#{"" + $name} .image,
-    .trmnl .view--quadrant .title_bar-#{"" + $name} .image {
-      max-height: 24px
-    }
-
     .view--half_horizontal {
-      .title_bar-#{"" + $name} {
+      .title_bar.title_bar-#{"" + $name} {
         background-image: url("/images/#{$name}/images/layout/half_horizontal--title_bar.png");
-        background-position: 2px 1px;
       }
     }
 
     .view--half_vertical {
-      .title_bar-#{"" + $name} {
+      .title_bar.title_bar-#{"" + $name} {
         background-image: url("/images/#{$name}/images/layout/half_vertical--title_bar.png");
-        background-position: 2px 2px;
       }
     }
 
     .view--quadrant {
-      .title_bar-#{"" + $name} {
+      .title_bar.title_bar-#{"" + $name} {
         background-image: url("/images/#{$name}/images/layout/quadrant--title_bar.png");
-        background-position: 2px 1px;
       }
     }
   }

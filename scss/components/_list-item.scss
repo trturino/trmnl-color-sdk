@@ -1,23 +1,8 @@
-@use "../abstracts/variables" as vars;
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: vars.$list-gap-small;
-}
-
-.item {
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  align-items: stretch;
-}
-
-.label {
-  display: inline-flex;
-  align-items: center;
-  font-family: "NicoClean";
-  font-size: 16px;
-  line-height: 20px;
-  word-break: break-all;
+@each $name, $hex in colors.$colors {
+  .trmnl .item .meta-#{"" + $name} {
+    @include mixins.pixel-image("/images/#{$name}/images/grayscale/gray-6.png");
+  }
 }

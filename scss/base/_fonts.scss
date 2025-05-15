@@ -1,9 +1,0 @@
-@use "../abstracts/mixins" as mixins;
-
-// Font-face declarations
-@include mixins.font-face("BlockKie", normal, "../fonts/BlockKie.ttf");
-@include mixins.font-face("Dogicapixel", normal, "../fonts/dogicapixel.ttf");
-@include mixins.font-face("Dogicapixel", bold, "../fonts/dogicapixelbold.ttf");
-@include mixins.font-face("NicoClean", normal, "../fonts/NicoClean-Regular.ttf");
-@include mixins.font-face("NicoBold", normal, "../fonts/NicoBold-Regular.ttf");
-@include mixins.font-face("NicoPups", normal, "../fonts/NicoPups-Regular.ttf");

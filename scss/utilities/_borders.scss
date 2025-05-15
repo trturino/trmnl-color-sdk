@@ -1,56 +1,27 @@
+@use "../abstracts/colors" as colors;
 @use "../abstracts/mixins" as mixins;
-@use "../abstracts/variables" as vars;
-@use "sass:map";
+@use "sass:string";
 
-@include mixins.generate-border-utilities();
+  @each $name, $hex in colors.$scales {
+    .trmnl {
+      $key-str: "#{$name}";
 
-// == utilities/_spacing.scss ==
-@for $i from 0 through 96 {
-  .m--#{$i} {
-    margin: $i * 4px !important;
+      $i: string.slice($name, string.index($key-str, "-") + 1);
+      $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
+      
+      .b-h-gray-#{$i}.b-h-#{$folder}-#{$i} ,
+      .border--h-#{$i}.border--h-#{$i}-#{$name}{
+        &::before {
+          @include mixins.pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
+        }
+      }
+
+      .b-v-gray-#{$i}.b-v-#{$folder}-#{$i},
+      .border--v-#{$i}.border--v-#{$i}-#{$name}{
+
+        &::after {
+          @include mixins.pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
+        }
+      }
+    }
   }
-
-  .mt--#{$i} {
-    margin-top: $i * 4px !important;
-  }
-
-  .mr--#{$i} {
-    margin-right: $i * 4px !important;
-  }
-
-  .mb--#{$i} {
-    margin-bottom: $i * 4px !important;
-  }
-
-  .ml--#{$i} {
-    margin-left: $i * 4px !important;
-  }
-}
-
-$gap-keys: (
-  xsmall,
-  small,
-  medium,
-  large,
-  xlarge,
-  xxlarge
-);
-
-@each $key in $gap-keys {
-  .gap--#{$key} {
-    gap: map.get((xsmall: vars.$gap-xsmall, small: vars.$gap-small, medium: vars.$gap-medium, large: vars.$gap-large, xlarge: vars.$gap-xlarge, xxlarge: vars.$gap-xxlarge), $key) !important;
-  }
-}
-
-.gap--space-between {
-  gap: 0 !important;
-  justify-content: space-between !important;
-}
-
-@for $i from 5 through 50 {
-  $val: $i * 1px;
-
-  .gap--\[#{$val}\] {
-    gap: $val !important;
-  }
-}

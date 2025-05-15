@@ -17,89 +17,9 @@
 // Pixel-perfect image rendering
 @mixin pixel-image($url) {
   @if $url != "" {
-    background: repeat url(#{$url});
+    background: repeat url(#{$url}) !important;
   }
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-}
-
-
-// Generate grey scale utilities
-@mixin generate-color-utilities {
-  @each $name, $hex in colors.$all-colors {
-    // turn the map‐key into a real string
-    $key-str: "#{$name}";
-
-    .trmnl {
-
-      .bg--#{$name},
-      .bg-#{$name} {
-        background-color: $hex !important;
-      }
-
-      .text--#{$name} {
-        color: $hex !important;
-      }
-
-      @if string.index($key-str, "-") {
-        $i: string.slice($name, string.index($key-str, "-") + 1);
-        $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
-
-        .bg--#{$name},
-        .bg-#{$name} {
-          @include pixel-image("/images/#{$folder}/images/grayscale/gray-#{$i}.png");
-        }
-
-        .text--#{$name} {
-          @include pixel-image("/images/#{$folder}/images/grayscale/gray-#{$i}.png");
-          color: rgba(0, 0, 0, 0);
-          -webkit-background-clip: text;
-          background-clip: text;
-        }
-      }
-    }
-  }
-}
-
-// Generate border utilities
-@mixin generate-border-utilities {
-  @each $name, $hex in colors.$scales {
-    .trmnl {
-      $key-str: "#{$name}";
-
-      $i: string.slice($name, string.index($key-str, "-") + 1);
-      $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
-
-      .border--h-#{$name},
-      .b-h-.bg-#{$folder}-#{$i} {
-        position: relative;
-
-        &::before {
-          content: " ";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 1px;
-          @include pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
-        }
-      }
-
-      .border--v-#{$name},
-      .b-v-#{$folder}-#{$i} {
-        position: relative;
-
-        &::after {
-          content: " ";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 1px;
-          height: 100%;
-          @include pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
-        }
-      }
-    }
-  }
 }

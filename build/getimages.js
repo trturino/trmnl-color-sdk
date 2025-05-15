@@ -36,7 +36,7 @@ function findPngUrls(css) {
 
 function parseColors(colorArgs) {
   const defaults = {
-    green:  [0, 255, 0],
+    green:  [0, 128, 0],
     yellow: [255, 255, 0],
     red:    [255, 0, 0],
     blue:   [0, 0, 255],
@@ -68,16 +68,25 @@ async function fetchImage(url) {
 async function processAndSave(img, rgb, outPath) {
   const clone = img.clone();
   clone.scan(0, 0, clone.bitmap.width, clone.bitmap.height, function(x, y, idx) {
-    const r = this.bitmap.data[idx+0],
-          g = this.bitmap.data[idx+1],
-          b = this.bitmap.data[idx+2],
-          a = this.bitmap.data[idx+3];
-    if (a !== 0 && r===0 && g===0 && b===0) {
-      this.bitmap.data[idx+0] = rgb[0];
-      this.bitmap.data[idx+1] = rgb[1];
-      this.bitmap.data[idx+2] = rgb[2];
+    const r = this.bitmap.data[idx + 0];
+    const g = this.bitmap.data[idx + 1];
+    const b = this.bitmap.data[idx + 2];
+    const a = this.bitmap.data[idx + 3];
+
+    // 1) White → transparent
+    if (a !== 0 && r === 255 && g === 255 && b === 255) {
+      this.bitmap.data[idx + 3] = 0;
+      return;
+    }
+
+    // 2) Black → your color
+    if (a !== 0 && r === 0 && g === 0 && b === 0) {
+      this.bitmap.data[idx + 0] = rgb[0];
+      this.bitmap.data[idx + 1] = rgb[1];
+      this.bitmap.data[idx + 2] = rgb[2];
     }
   });
+
   await fs.promises.mkdir(path.dirname(outPath), { recursive: true });
   await clone.writeAsync(outPath);
   console.log(`    ↳ saved → ${outPath}`);
