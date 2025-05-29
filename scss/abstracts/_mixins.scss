@@ -1,0 +1,25 @@
+@use "../abstracts/variables" as vars;
+@use "../abstracts/colors" as colors;
+@use "sass:string";
+
+// Reusable mixins
+
+// Font-face helper
+@mixin font-face($family, $weight, $path) {
+  @font-face {
+    font-family: $family;
+    font-style: normal;
+    font-weight: $weight;
+    src: url(#{$path}) format("truetype");
+  }
+}
+
+// Pixel-perfect image rendering
+@mixin pixel-image($url) {
+  @if $url != "" {
+    background: repeat url(#{$url}) !important;
+  }
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}

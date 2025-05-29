@@ -1,0 +1,59 @@
+@use "../abstracts/variables" as vars;
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
+
+@each $name, $hex in colors.$colors {
+  .trmnl-v2 {
+    .view--full .title_bar.title_bar-#{"" + $name}::before {
+      background-image: url("/images/#{$name}/images/layout/full--title_bar-v2.png");
+    }
+  }
+
+  .trmnl {
+    .title_bar.title_bar-#{"" + $name} {
+      color: $hex !important;
+
+      // .title {
+      //   font-family: "NicoClean";
+      //   -webkit-font-smoothing: none;
+      //   font-size: 16px;
+      //   padding-top: 5px;
+      //   line-height: 1;
+      //   display: -webkit-box;
+      //   -webkit-line-clamp: 1;
+      //   line-clamp: 1;
+      //   -webkit-box-orient: vertical;
+      //   word-break: break-all;
+      //   overflow: hidden;
+      //   min-height: 16px;
+      //   font-weight: 400;
+      //   -webkit-text-stroke: 3.5px fn.color(white);
+      //   paint-order: stroke fill;
+      // }
+    }
+
+    .view--full {
+      .title_bar.title_bar-#{"" + $name}::before {
+        @include mixins.pixel-image("/images/#{$name}/images/layout/full--title_bar.png");
+      }
+    }
+
+    .view--half_horizontal {
+      .title_bar.title_bar-#{"" + $name} {
+        background-image: url("/images/#{$name}/images/layout/half_horizontal--title_bar.png");
+      }
+    }
+
+    .view--half_vertical {
+      .title_bar.title_bar-#{"" + $name} {
+        background-image: url("/images/#{$name}/images/layout/half_vertical--title_bar.png");
+      }
+    }
+
+    .view--quadrant {
+      .title_bar.title_bar-#{"" + $name} {
+        background-image: url("/images/#{$name}/images/layout/quadrant--title_bar.png");
+      }
+    }
+  }
+}

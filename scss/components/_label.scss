@@ -1,0 +1,25 @@
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
+
+.trmnl {
+    @each $name, $hex in colors.$colors {
+        .label.label-#{"" + $name} {
+            color: $hex !important;
+        }
+
+        .label.label--outline-#{"" + $name} {
+            border: 1px solid $hex !important;
+        }
+
+        .label.label--underline-#{"" + $name}::after,
+        .label.label--underline-2-#{"" + $name}::after {
+            @include mixins.pixel-image("/images/#{$name}/images/borders/2.png");
+        }
+
+        .trmnl .label.label--background-#{"" + $name} {
+            background-color: $hex !important;
+            border-radius: 4px;
+            padding: 1px 5px
+        }
+    }
+}

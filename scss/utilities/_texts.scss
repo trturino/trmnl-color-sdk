@@ -1,0 +1,36 @@
+@use "../abstracts/colors" as colors;
+@use "../abstracts/mixins" as mixins;
+@use "sass:string";
+
+@each $name, $hex in colors.$all-colors {
+  // turn the map‐key into a real string
+  $key-str: "#{$name}";
+
+  .trmnl {
+
+    .bg--#{"" + $name},
+    .bg-#{"" + $name} {
+      background-color: $hex !important;
+    }
+
+    .text--#{"" + $name} {
+      color: $hex !important;
+    }
+
+    @if string.index($key-str, "-") {
+      $i: string.slice($name, string.index($key-str, "-") + 1);
+      $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
+
+      .bg--#{"" + $name},
+      .bg-#{"" + $name} {
+        @include mixins.pixel-image("/images/#{$folder}/images/grayscale/gray-#{$i}.png");
+      }
+
+      .text--#{"" + $name} {
+        @include mixins.pixel-image("/images/#{$folder}/images/grayscale/gray-#{$i}.png");
+        color: rgba(0, 0, 0, 0) !important;
+        background-clip: text !important;
+      }
+    }
+  }
+}

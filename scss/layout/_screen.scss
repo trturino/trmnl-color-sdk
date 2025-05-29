@@ -1,0 +1,11 @@
+@use "../abstracts/colors" as colors;
+@use "../abstracts/mixins" as mixins;
+
+@each $name, $hex in colors.$colors {
+  // Screen & mashup layouts
+  .trmnl {
+    .screen-#{"" + $name} {
+      background-color: $hex;
+    }
+  }
+}

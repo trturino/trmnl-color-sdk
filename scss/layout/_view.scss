@@ -1,0 +1,21 @@
+@use "../abstracts/colors" as colors;
+
+.trmnl {
+    @each $name, $hex in colors.$colors {
+        .view--quadrant.view-#{"" + $name}--quadrant {
+            &::before {
+                background-image: url("/images/#{$name}/images/layout/quadrant.png");
+            }
+        }
+        .view--half_vertical.view-#{"" + $name}--half-vertical {
+            &::before {
+                background-image: url("/images/#{$name}/images/layout/half_vertical.png");
+            }
+        }
+        .view--half-horizontal.view-#{"" + $name}--half-horizontal {
+            &::before {
+                background-image: url("/images/#{$name}/images/layout/half_horizontal.png");
+            }
+        }
+    }
+}

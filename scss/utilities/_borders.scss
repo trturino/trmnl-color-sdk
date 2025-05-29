@@ -1,0 +1,27 @@
+@use "../abstracts/colors" as colors;
+@use "../abstracts/mixins" as mixins;
+@use "sass:string";
+
+  @each $name, $hex in colors.$scales {
+    .trmnl {
+      $key-str: "#{$name}";
+
+      $i: string.slice($name, string.index($key-str, "-") + 1);
+      $folder: string.slice($name, 1, string.index($key-str, "-") - 1);
+      
+      .b-h-gray-#{$i}.b-h-#{$folder}-#{$i} ,
+      .border--h-#{$i}.border--h-#{$i}-#{$name}{
+        &::before {
+          @include mixins.pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
+        }
+      }
+
+      .b-v-gray-#{$i}.b-v-#{$folder}-#{$i},
+      .border--v-#{$i}.border--v-#{$i}-#{$name}{
+
+        &::after {
+          @include mixins.pixel-image("/images/#{$folder}/images/borders/#{$i}.png");
+        }
+      }
+    }
+  }

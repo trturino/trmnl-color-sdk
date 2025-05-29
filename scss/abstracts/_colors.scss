@@ -1,0 +1,40 @@
+@use "variables" as vars;
+@use "sass:map";
+@use "sass:string";
+@use "sass:color";
+
+$colors: vars.$bases;
+
+/// Generates an N-step lightness scale for each color in $bases.
+/// @param $bases  A map of `name: color` pairs
+/// @param $steps  How many variants to generate (default: 7)
+/// @return        A map of `"name-1": shade, …, "name-N": shade`
+@function generate-color-scales($bases, $steps: 7) {
+  $scales: (); // will collect our results
+  $percent-step: calc(
+    100% / ($steps + 1)
+  ); // evenly divide the 0→100% lightness range
+
+  @each $name, $base-color in $bases {
+    @for $i from 1 through $steps {
+      // compute how much lighter: e.g. 1×12.5%, 2×12.5%, …
+      $light-amount: $percent-step * $i;
+      $shade: color.adjust($base-color,  $lightness: $light-amount);
+
+      // build the map key "yellow-1", "yellow-2", etc.
+      $key: string.unquote("#{ $name }-#{ $i }");
+      $scales: map.merge(
+        $scales,
+        (
+          $key: $shade,
+        )
+      );
+    }
+  }
+
+  @return $scales;
+}
+
+$scales: generate-color-scales($colors, 7);
+
+$all-colors: map.merge($colors, $scales);

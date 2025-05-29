@@ -1,0 +1,8 @@
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
+
+@each $name, $hex in colors.$colors {
+  .trmnl .item .meta-#{"" + $name} {
+    @include mixins.pixel-image("/images/#{$name}/images/grayscale/gray-6.png");
+  }
+}

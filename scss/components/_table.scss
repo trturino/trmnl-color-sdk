@@ -1,0 +1,20 @@
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
+
+@each $name, $hex in colors.$colors {
+  .trmnl {
+    .table.table-#{"" + $name} {
+      thead tr {
+        th::before {
+          background: repeat url("/images/#{$name}/images/borders/3.png")
+        }
+      }
+
+      tbody tr {
+        td::before {
+          background: repeat url("/images/#{$name}/images/borders/6.png")
+        }
+      }
+    }
+  }
+}

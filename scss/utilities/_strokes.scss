@@ -1,0 +1,10 @@
+@use "../abstracts/mixins" as mixins;
+@use "../abstracts/colors" as colors;
+
+.trmnl {
+    @each $name, $hex in colors.$colors {
+        .stroke-#{"" + $name} {
+            -webkit-text-stroke: 3.5px $hex;
+        }
+    }
+}
