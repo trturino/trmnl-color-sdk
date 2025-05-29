@@ -18,19 +18,58 @@ const opts = program.opts();
 const cssSource = program.args[0];
 
 async function fetchCss(source) {
-  if (/^https?:\/\//.test(source)) {
-    const res = await axios.get(source);
-    return res.data;
-  } else {
-    return fs.readFileSync(source, 'utf8');
+  try {
+    let content;
+    if (/^https?:\/\//.test(source)) {
+      console.log(`Fetching CSS from: ${source}`);
+      const res = await axios.get(source, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        },
+        responseType: 'text',
+        validateStatus: status => status >= 200 && status < 300
+      });
+      content = res.data;
+    } else {
+      console.log(`Reading local CSS file: ${source}`);
+      content = fs.readFileSync(source, 'utf8');
+    }
+    
+    // Basic validation to ensure we got CSS content
+    if (typeof content !== 'string' || !content.trim()) {
+      throw new Error('Empty or invalid CSS content');
+    }
+    
+    return content;
+  } catch (error) {
+    console.error(`Error fetching CSS from ${source}:`, error.message);
+    throw error;
   }
 }
 
 function findPngUrls(css) {
-  const re = /url\(\s*['"]?(.*?\.png)['"]?\s*\)/gi;
+  // First, clean up the CSS by removing comments and newlines
+  const cleanCss = css
+    .replace(/\/\*[\s\S]*?\*\//g, '')  // Remove CSS comments
+    .replace(/\s+/g, ' ');                // Collapse whitespace
+
+  // Look for URL patterns in the CSS
+  const re = /url\(['"]?([^'")]+\.png)['"]?\s*\)/gi;
   const urls = [];
-  let m;
-  while ((m = re.exec(css)) !== null) urls.push(m[1]);
+  let match;
+  
+  while ((match = re.exec(cleanCss)) !== null) {
+    // Clean up the URL by removing any query strings or fragments
+    const cleanUrl = match[1]
+      .split('?')[0]    // Remove query string
+      .split('#')[0]     // Remove fragment
+      .replace(/^['"]|['"]$/g, ''); // Remove surrounding quotes if any
+    
+    if (!urls.includes(cleanUrl)) {
+      urls.push(cleanUrl);
+    }
+  }
+  
   return urls;
 }
 
@@ -94,15 +133,25 @@ async function processAndSave(img, rgb, outPath) {
 
 (async () => {
   try {
+    console.log('Starting image extraction process...');
+    
+    // Fetch and process CSS
+    console.log(`Processing CSS source: ${cssSource}`);
     const css = await fetchCss(cssSource);
+    console.log(`Successfully fetched CSS (${css.length} characters)`);
+    
+    // Extract image URLs
+    console.log('Extracting image URLs from CSS...');
     let paths = findPngUrls(css);
+    console.log(`Found ${paths.length} image references in CSS`);
 
-    // apply filters
+    // Apply filters if any
     if (opts.filter.length) {
       console.log(`Applying filters: ${opts.filter.join(', ')}`);
-      paths = paths.filter(p =>
-        !opts.filter.some(pat => minimatch(p, pat))
-      );
+      const beforeCount = paths.length;
+      paths = paths.filter(p => !opts.filter.some(pat => minimatch(p, pat)));
+      const filteredCount = beforeCount - paths.length;
+      console.log(`Filtered out ${filteredCount} images, ${paths.length} remaining`);
     }
 
     if (!paths.length) {
@@ -110,8 +159,13 @@ async function processAndSave(img, rgb, outPath) {
       return;
     }
 
+    // Parse and validate colors
     const colors = parseColors(opts.color);
-    console.log(`Generating variants for: ${Object.keys(colors).join(', ')}`);
+    console.log(`Generating color variants for: ${Object.keys(colors).join(', ')}`);
+    
+    // Ensure output directory exists
+    await fs.promises.mkdir(opts.output, { recursive: true });
+    console.log(`Output directory: ${path.resolve(opts.output)}`);
 
     for (let rel of paths) {
       let url;
@@ -124,19 +178,27 @@ async function processAndSave(img, rgb, outPath) {
         continue;
       }
 
-      console.log(`Fetching ${url} …`);
+      console.log(`\nProcessing image: ${url}`);
       let img;
       try {
+        console.log(`  Downloading from: ${url}`);
         img = await fetchImage(url);
+        console.log(`  ✓ Downloaded (${img.bitmap.width}×${img.bitmap.height})`);
       } catch (e) {
-        console.error(`  ✗ failed to load: ${e.message}`);
+        console.error(`  ✗ Failed to download: ${e.message}`);
         continue;
       }
 
       const cleanRel = rel.replace(/^\/+/, '');
       for (let [name, rgb] of Object.entries(colors)) {
         const outFile = path.join(opts.output, name, cleanRel);
-        await processAndSave(img, rgb, outFile);
+        console.log(`  → Saving ${name} variant to: ${outFile}`);
+        try {
+          await processAndSave(img, rgb, outFile);
+          console.log(`  ✓ Saved ${name} variant`);
+        } catch (e) {
+          console.error(`  ✗ Failed to save ${name} variant: ${e.message}`);
+        }
       }
     }
   } catch (err) {
